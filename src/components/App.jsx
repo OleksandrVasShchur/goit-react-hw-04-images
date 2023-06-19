@@ -30,8 +30,6 @@ export const App = () => {
   const receiveImages = async (query, page) => {
     setIsLoading(true);
 
-    
-
     try {
       const { hits, totalHits } = await getImages(query, page);
 console.log(hits)
