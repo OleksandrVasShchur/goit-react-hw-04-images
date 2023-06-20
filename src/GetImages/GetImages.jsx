@@ -13,7 +13,7 @@ export async function getImages(query, page) {
     page,
   });
   const { data } = await axios.get(`https://pixabay.com/api/?${searchParams}`);
-  console.log(data)
+  
   return data;
   
 }

@@ -19,12 +19,12 @@ export const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
   const [total, setTotal] = useState(0);
-
+ 
   useEffect(() => {
     if (!query) {
       return;
     }
-    receiveImages();
+    receiveImages(query, page);
   }, [query, page]);
 
   const receiveImages = async (query, page) => {
@@ -32,8 +32,7 @@ export const App = () => {
 
     try {
       const { hits, totalHits } = await getImages(query, page);
-console.log(hits)
-console.log(totalHits)
+
       if (hits.length === 0) {
         toast.error('Sorry, no images available');
       }
@@ -47,6 +46,7 @@ console.log(totalHits)
   };
 
   const onHandlSubmit = value => {
+
     setQuery(value);
     setPage(1);
     setImages([]);
@@ -100,108 +100,3 @@ console.log(totalHits)
   );
 };
 
-// export class App extends Component {
-//   state = {
-//     images: [],
-//     query: '',
-//     page: 1,
-//     tags: '',
-//     isLoading: false,
-//     error: null,
-//     showModal: false,
-//     currentImageUrl: null,
-//     total: 0,
-//   };
-
-//   componentDidUpdate(_, prevState) {
-//     const { query, page } = this.state;
-
-//     if (prevState.query !== query || prevState.page !== page) {
-//       this.receiveImages(query, page);
-//     }
-//   }
-
-//   receiveImages = async (query, page) => {
-//     if (!query) {
-//       return;
-//     }
-
-//     this.setState({ isLoading: true });
-
-//     try {
-//       const { hits, totalHits } = await getImages(query, page);
-
-//       if (hits.length === 0) {
-//         toast.error('Sorry, no images available');
-//       }
-
-//       this.setState(prevState => ({
-//         images: [...prevState.images, ...hits],
-//         total: totalHits,
-//       }));
-//     } catch (error) {
-//       this.setState({ error: error.message });
-//     } finally {
-//       this.setState({ isLoading: false });
-//     }
-//   };
-
-//   onHandlSubmit = value => {
-//     this.setState({ query: value, page: 1, images: [], error: null });
-//   };
-
-//   onLoadMore = () => {
-//     this.setState(prevState => ({ page: prevState.page + 1 }));
-//   };
-
-//   openModal = (largeImageURL, tags) => {
-//     this.setState({
-//       showModal: true,
-//       currentImageUrl: largeImageURL.target.src,
-//       tags,
-//     });
-//   };
-
-//   closeModal = () => {
-//     this.setState({
-//       showModal: false,
-//       currentImageUrl: null,
-//       tags: '',
-//     });
-//   };
-
-//   render() {
-//     const { images, error, isLoading, showModal, currentImageUrl, total } =
-//       this.state;
-//     const totalPages = total / images.length;
-
-//     return (
-//       <section className={css.App}>
-//         <Searchbar onSubmit={this.onHandlSubmit} />
-//         {isLoading && <Loader />}
-//         {images.length === 0 && (
-//           <p className={css.message}>Please enter your search details...</p>
-//         )}
-//         {error && <p>Something went wrong </p>}
-
-//         {images.length > 0 && (
-//           <ImageGallery images={images} openModal={this.openModal} />
-//         )}
-
-//         {totalPages > 1 && !isLoading && images.length > 0 && (
-//           <Button onClick={this.onLoadMore} disabled={isLoading} />
-//         )}
-
-//         {showModal && (
-//           <Modal
-//             src={currentImageUrl}
-//             describ={'largePicture'}
-//             onCloseModal={this.closeModal}
-//           />
-//         )}
-
-//         <ToastContainer />
-//       </section>
-//     );
-//   }
-// }
