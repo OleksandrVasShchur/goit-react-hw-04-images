@@ -8,18 +8,19 @@ const refModalRoot = document.querySelector('#modal-w-root');
 const Modal = ({ src, describ, onCloseModal }) => {
   
   useEffect(() => {
+    const onHandleKey = e => {
+      if (e.code === 'Escape') {
+        onCloseModal();
+      }
+    };
     window.addEventListener('keydown', onHandleKey);
 
     return () => {
       window.removeEventListener('keydown', onHandleKey);
     };
-  });
+  }, [onCloseModal]);
 
-  const onHandleKey = e => {
-    if (e.code === 'Escape') {
-      onCloseModal();
-    }
-  };
+  
 
   const onCloseBackdrop = e => {
     if (e.currentTarget === e.target) {
